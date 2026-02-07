@@ -3,6 +3,8 @@ import express from "express";
 import { Env } from "./config/env.config";
 import cors from "cors"
 import { HTTPSTATUS } from "./config/http.config";
+import { errorHandler } from "./middlewares/errorHandler.middleware";
+import { BadRequestException } from "./utils/app-error";
 
 
 const app=express();
@@ -18,10 +20,19 @@ app.use(
 );
 
 app.get("/",(req,res,next)=>{
-    res.status(HTTPSTATUS.OK).json({
-        message:"Hello from server!"
-    })
+    try{
+        //throw new BadRequestException("This is a test error")
+        res.status(HTTPSTATUS.OK).json({
+            message:"Hello from server!"
+        });
+
+    }catch(error){
+        next(error);
+    }
 });
+
+app.use(errorHandler);
+
 
 app.listen(Env.PORT,()=>{
     console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
