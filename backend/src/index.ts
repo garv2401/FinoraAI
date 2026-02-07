@@ -5,6 +5,7 @@ import cors from "cors"
 import { HTTPSTATUS } from "./config/http.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { BadRequestException } from "./utils/app-error";
+import { asyncHandler } from "./middlewares/asyncHandler.middleware";
 
 
 const app=express();
@@ -19,20 +20,32 @@ app.use(
     })
 );
 
-app.get("/",(req,res,next)=>{
-    try{
-        //throw new BadRequestException("This is a test error")
-        res.status(HTTPSTATUS.OK).json({
-            message:"Hello from server!"
-        });
 
-    }catch(error){
-        next(error);
-    }
-});
+//without async handler
+// app.get("/",(req,res,next)=>{
+//     try{
+//         //throw new BadRequestException("This is a test error")
+//         res.status(HTTPSTATUS.OK).json({
+//             message:"Hello from server!"
+//         });
+
+//     }catch(error){
+//         next(error);
+//     }
+// });
+
+//with async handler
+app.get(
+  "/",
+  asyncHandler(async(req, res, next) => {
+    throw new BadRequestException("This is a test error");
+    res.status(HTTPSTATUS.OK).json({
+      message: "Hello from server!",
+    });
+  }),
+);
 
 app.use(errorHandler);
-
 
 app.listen(Env.PORT,()=>{
     console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
