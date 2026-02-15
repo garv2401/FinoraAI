@@ -8,6 +8,8 @@ import { BadRequestException } from "./utils/app-error";
 import { asyncHandler } from "./middlewares/asyncHandler.middleware";
 import connectDatabase from "./config/database.config";
 import authRoutes from "./routes/auth.route";
+import passport from "passport";
+import "./config/passport.config";
 
 
 const app=express();
@@ -15,6 +17,7 @@ const BASE_URL=Env.BASE_PATH;
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(passport.initialize());
 app.use(
     cors({
         origin:Env.FRONTEND_ORIGIN,
