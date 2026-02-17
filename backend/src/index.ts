@@ -10,6 +10,8 @@ import connectDatabase from "./config/database.config";
 import authRoutes from "./routes/auth.route";
 import passport from "passport";
 import "./config/passport.config";
+import { passportAuthenticateJwt } from "./config/passport.config";
+import userRoutes from "./routes/user.route";
 
 
 const app=express();
@@ -51,6 +53,7 @@ app.get(
 );
 
 app.use(`${BASE_URL}/auth`,authRoutes);
+app.use(`${BASE_URL}/user`,passportAuthenticateJwt,userRoutes);
 
 app.use(errorHandler);
 
