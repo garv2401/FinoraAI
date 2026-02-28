@@ -1,10 +1,9 @@
 import { HTTPSTATUS } from "../config/http.config";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { Request,Response } from "express";
-import { createTransactionSchema, transactionIdSchema } from "../validators/transaction.validator";
-import { createTransactionService, getAllTransactionService, getTransactionByIdService } from "../services/transaction.service";
+import { createTransactionSchema, transactionIdSchema, updateTransactionSchema } from "../validators/transaction.validator";
+import { createTransactionService, deleteTransactionService, duplicateTransactionService, getAllTransactionService, getTransactionByIdService, updateTransactionService } from "../services/transaction.service";
 import { TransactionTypeEnum } from "../models/transaction.model";
-
 
 export const createTransactionController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -53,6 +52,50 @@ export const getTransactionByIdController = asyncHandler(
     return res.status(HTTPSTATUS.OK).json({
       message: "Transaction fetched successfully",
       transaction,
+    });
+  }
+);
+
+export const duplicateTransactionController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+    const transactionId = transactionIdSchema.parse(req.params.id);
+
+    const transaction = await duplicateTransactionService(
+      userId,
+      transactionId
+    );
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Transaction duplicated successfully",
+      data: transaction,
+    });
+  }
+);
+
+export const updateTransactionController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+    const transactionId = transactionIdSchema.parse(req.params.id);
+    const body = updateTransactionSchema.parse(req.body);
+
+    await updateTransactionService(userId, transactionId, body);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Transaction updated successfully",
+    });
+  }
+);
+
+export const deleteTransactionController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+    const transactionId = transactionIdSchema.parse(req.params.id);
+
+    await deleteTransactionService(userId, transactionId);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Transaction deleted successfully",
     });
   }
 );
