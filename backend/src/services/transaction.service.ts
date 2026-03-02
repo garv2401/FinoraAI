@@ -201,3 +201,54 @@ export const deleteTransactionService = async (
 
   return;
 };
+
+export const bulkDeleteTransactionService = async (
+  userId: string,
+  transactionIds: string[]
+) => {
+  const result = await TransactionModel.deleteMany({
+    _id: { $in: transactionIds },
+    userId,
+  });
+
+  if (result.deletedCount === 0)
+    throw new NotFoundException("No transations found");
+
+  return {
+    sucess: true,
+    deletedCount: result.deletedCount,
+  };
+};
+
+export const bulkTransactionService = async (
+  userId: string,
+  transactions: CreateTransactionType[]
+) => {
+  try {
+    const bulkOps = transactions.map((tx) => ({
+      insertOne: {
+        document: {
+          ...tx,
+          userId,
+          isRecurring: false,
+          nextRecurringDate: null,
+          recurringInterval: null,
+          lastProcesses: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      },
+    }));
+
+    const result = await TransactionModel.bulkWrite(bulkOps, {
+      ordered: true,
+    });
+
+    return {
+      insertedCount: result.insertedCount,
+      success: true,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
