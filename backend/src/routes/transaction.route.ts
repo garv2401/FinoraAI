@@ -12,7 +12,7 @@ transactionRoutes.put("/duplicate/:id", duplicateTransactionController);
 transactionRoutes.put("/update/:id", updateTransactionController);
 transactionRoutes.delete("/delete/:id", deleteTransactionController);
 transactionRoutes.delete("/bulk-delete", bulkDeleteTransactionController);
-transactionRoutes.post("/scan-receipt",upload.single("reciept"),scanReceiptController);
+transactionRoutes.post("/scan-receipt",upload.single("receipt"),scanReceiptController);
 
 
 export default transactionRoutes;
