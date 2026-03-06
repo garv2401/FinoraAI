@@ -314,6 +314,7 @@ export const scanReceiptService = async (
       receiptUrl: file.path,
     };
   } catch (error) {
+    console.log(error);
     return { error: "Reciept scanning  service unavailable"};
   }
 };
