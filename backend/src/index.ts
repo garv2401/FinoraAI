@@ -13,6 +13,8 @@ import "./config/passport.config";
 import { passportAuthenticateJwt } from "./config/passport.config";
 import userRoutes from "./routes/user.route";
 import transactionRoutes from "./routes/transaction.route";
+import { startJobs } from "./crons/scheduler";
+import { initializeCrons } from "./crons";
 
 
 const app=express();
@@ -53,6 +55,8 @@ app.get(
   }),
 );
 
+startJobs();
+
 app.use(`${BASE_URL}/auth`,authRoutes);
 app.use(`${BASE_URL}/user`,passportAuthenticateJwt,userRoutes);
 app.use(`${BASE_URL}/transaction`,passportAuthenticateJwt,transactionRoutes);
@@ -61,5 +65,8 @@ app.use(errorHandler);
 
 app.listen(Env.PORT,async ()=>{
     await connectDatabase();
+    if(Env.NODE_ENV==="development"){
+      await initializeCrons();
+    }
     console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
 });
