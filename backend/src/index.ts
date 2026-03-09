@@ -15,6 +15,7 @@ import userRoutes from "./routes/user.route";
 import transactionRoutes from "./routes/transaction.route";
 import { startJobs } from "./crons/scheduler";
 import { initializeCrons } from "./crons";
+import reportRoutes from "./routes/report.route";
 
 
 const app=express();
@@ -60,6 +61,7 @@ startJobs();
 app.use(`${BASE_URL}/auth`,authRoutes);
 app.use(`${BASE_URL}/user`,passportAuthenticateJwt,userRoutes);
 app.use(`${BASE_URL}/transaction`,passportAuthenticateJwt,transactionRoutes);
+app.use(`${BASE_URL}/report`,passportAuthenticateJwt,reportRoutes);
 
 app.use(errorHandler);
 
