@@ -1,4 +1,4 @@
-import { calculateNextOccurence } from "../utils/helper";
+import { calculateNextOccurrence } from "../utils/helper";
 import { CreateTransactionType, UpdateTransactionType } from "../validators/transaction.validator";
 import TransactionModel, { TransactionTypeEnum } from "../models/transaction.model";
 import { BadRequestException, NotFoundException } from "../utils/app-error";
@@ -15,14 +15,14 @@ export const createTransactionService = async (
   const currentDate = new Date();
 
   if (body.isRecurring && body.recurringInterval) {
-    const calulatedDate = calculateNextOccurence(
+    const calulatedDate = calculateNextOccurrence(
       body.date,
       body.recurringInterval
     );
 
     nextRecurringDate =
       calulatedDate < currentDate
-        ? calculateNextOccurence(currentDate, body.recurringInterval)
+        ? calculateNextOccurrence(currentDate, body.recurringInterval)
         : calulatedDate;
   }
 
@@ -167,11 +167,11 @@ export const updateTransactionService = async (
   let nextRecurringDate: Date | undefined;
 
   if (isRecurring && recurringInterval) {
-    const calulatedDate = calculateNextOccurence(date, recurringInterval);
+    const calulatedDate = calculateNextOccurrence(date, recurringInterval);
 
     nextRecurringDate =
       calulatedDate < now
-        ? calculateNextOccurence(now, recurringInterval)
+        ? calculateNextOccurrence(now, recurringInterval)
         : calulatedDate;
   }
 

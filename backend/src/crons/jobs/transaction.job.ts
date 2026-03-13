@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import TransactionModel from "../../models/transaction.model";
-import { calculateNextOccurence } from "../../utils/helper";
+import { calculateNextOccurrence } from "../../utils/helper";
 export const processRecurringTransactions = async () => {
   const now = new Date();
   let processedCount = 0;
@@ -15,7 +15,7 @@ export const processRecurringTransactions = async () => {
     console.log("Starting recurring proccess");
 
     for await (const tx of transactionCursor) {
-      const nextDate = calculateNextOccurence(
+      const nextDate = calculateNextOccurrence(
         tx.nextRecurringDate!,
         tx.recurringInterval!
       );
