@@ -7,7 +7,6 @@ import ReportModel, { ReportStatusEnum } from "../../models/report.model";
 import { calculateNextReportDate } from "../../utils/helper";
 import { sendReportEmail } from "../../mailers/report.mailer";
 
-
 export const processReportJob = async () => {
   const now = new Date();
 
@@ -16,11 +15,11 @@ export const processReportJob = async () => {
 
   //Today july 1, then run report for -> june 1 - 30 
 //Get Last Month because this will run on the first of the month
-  const from = startOfMonth(subMonths(now, 2));
-  const to = endOfMonth(subMonths(now, 2));
+  const from = startOfMonth(subMonths(now, 1));
+  const to = endOfMonth(subMonths(now, 1));
 
-  // const from = "2026-02-01T23:00:00.000Z";
-  // const to = "2026-04-T23:00:00.000Z";
+  // const from = "2025-04-01T23:00:00.000Z";
+  // const to = "2025-04-T23:00:00.000Z";
 
   try {
     const reportSettingCursor = ReportSettingModel.find({
