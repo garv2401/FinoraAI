@@ -51,15 +51,13 @@ export interface TransactionType {
 
 export interface GetAllTransactionResponse {
   message: string;
-  result: {
-    transations: TransactionType[];
-    pagination: {
-      pageSize: number;
-      pageNumber: number;
-      totalCount: number;
-      totalPages: number;
-      skip: number;
-    };
+  transations: TransactionType[];
+  pagination: {
+    pageSize: number;
+    pageNumber: number;
+    totalCount: number;
+    totalPages: number;
+    skip: number;
   };
 }
 
@@ -88,7 +86,6 @@ export interface UpdateTransactionPayload {
   id: string;
   transaction: CreateTransactionBody;
 }
-
 
 export interface BulkTransactionType {
   title: string;
